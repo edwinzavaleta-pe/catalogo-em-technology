@@ -1,9 +1,9 @@
-const CACHE_NAME = 'em-tech-v1';
+const CACHE_NAME = 'em-tech-v2';
 const ASSETS = [
   '/',
   '/index.html',
-  '/manifest.json'
-  // Nota: El CSV no se pone aquí, se guarda en el localStorage desde el index.html para evitar conflictos de caché dura.
+  '/manifest.json',
+  '/logo.jpg'
 ];
 
 self.addEventListener('install', event => {
