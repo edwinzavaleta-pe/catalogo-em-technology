@@ -1,0 +1,16 @@
+{
+  "name": "E&M Technology Store",
+  "short_name": "E&M Tech",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#00f6ff",
+  "description": "Catálogo Virtual de Tecnología",
+  "icons": [
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/512px-GitHub_Invertocat_Logo.svg.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

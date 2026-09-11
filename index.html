@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>E&M Technology Store</title>
+  <style>
+    /* Estilos Generales - Diseño Premium Black & Gold */
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-header: #000000;
+      --bg-card: #141414;
+      --gold-primary: #d4af37;
+      --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+      --whatsapp-green: #25d366;
+      --text-main: #ffffff;
+      --text-muted: #a0a0a0;
+      --border-color: #333333;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding-top: 110px;
+      padding-bottom: 70px;
+    }
+
+    /* Header Superior Negro y Dorado */
+    header {
+      background-color: var(--bg-header);
+      border-bottom: 2px solid var(--gold-primary);
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.1);
+    }
+    
+    .top-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 15px; height: 60px;
+    }
+
+    .menu-btn { background: none; border: none; color: var(--gold-primary); font-size: 1.5rem; cursor: pointer; }
+
+    .logo-container {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    
+    .logo-container img {
+      height: 40px; width: 40px; border-radius: 50%; border: 1px solid var(--gold-primary); object-fit: cover;
+    }
+    
+    .logo-container h1 { 
+      font-size: 1.2rem; font-weight: 700; margin: 0; 
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .user-actions { display: flex; gap: 15px; font-size: 1.2rem; color: var(--gold-primary); }
+
+    /* Barra de Búsqueda */
+    .search-bar-container {
+      background-color: var(--bg-header); padding: 10px 15px;
+    }
+    
+    .search-input-wrapper {
+      display: flex; background: var(--bg-card);
+      border: 1px solid var(--gold-primary); border-radius: 4px; overflow: hidden;
+    }
+
+    .search-input-wrapper input {
+      flex: 1; padding: 10px 12px; border: none; outline: none; 
+      background: transparent; color: var(--text-main); font-size: 0.9rem;
+    }
+    .search-input-wrapper input::placeholder { color: var(--text-muted); }
+
+    .search-input-wrapper button {
+      background: var(--gold-primary); color: #000; border: none; padding: 0 15px; cursor: pointer; font-weight: bold;
+    }
+
+    /* Overlay para oscurecer fondo */
+    .overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      background: rgba(0,0,0,0.8); z-index: 1500; display: none;
+    }
+    .overlay.open { display: block; }
+
+    /* Layout Principal */
+    .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+    .section-title { font-size: 1.2rem; font-weight: 600; margin: 20px 0 15px; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;}
+
+    /* Menú Lateral */
+    .side-menu {
+      position: fixed; top: 0; left: -100%; width: 280px; height: 100vh;
+      background: var(--bg-card); z-index: 2000; transition: left 0.3s ease;
+      border-right: 1px solid var(--gold-primary); overflow-y: auto;
+    }
+    .side-menu.open { left: 0; }
+    
+    .menu-header { display: flex; background: var(--bg-header); border-bottom: 1px solid var(--gold-primary); }
+    .menu-tab {
+      flex: 1; text-align: center; padding: 15px; font-weight: bold; font-size: 0.9rem;
+      color: var(--text-muted); cursor: pointer;
+    }
+    .menu-tab.active { color: var(--gold-primary); border-bottom: 2px solid var(--gold-primary); }
+
+    .category-list { list-style: none; padding: 10px 0; }
+    .category-list li {
+      padding: 12px 20px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem;
+      color: var(--text-main); cursor: pointer; transition: 0.2s;
+    }
+    .category-list li:hover { color: var(--gold-primary); background: rgba(212, 175, 55, 0.05); }
+
+    /* Grilla de Productos */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+    @media (min-width: 768px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+      .container { padding: 20px; }
+    }
+
+    /* Tarjeta de Producto */
+    .card {
+      background: var(--bg-card); border-radius: 8px; padding: 15px; text-align: center;
+      border: 1px solid var(--border-color); display: flex; flex-direction: column; position: relative;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .card:hover { border-color: var(--gold-primary); transform: translateY(-3px); }
+    
+    .wishlist-icon { position: absolute; top: 10px; right: 10px; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+    
+    .card-img-placeholder {
+      width: 100%; height: 120px; background-color: var(--bg-header); border: 1px dashed var(--border-color);
+      margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem;
+    }
+    
+    .card-title {
+      font-size: 0.85rem; font-weight: 600; color: var(--text-main);
+      margin-bottom: 5px; line-height: 1.3; height: 35px; overflow: hidden;
+    }
+    
+    .card-stock { font-size: 0.75rem; color: var(--gold-primary); margin-bottom: 8px; }
+    .card-price { font-size: 1.1rem; font-weight: bold; color: var(--gold-primary); margin-bottom: 12px; }
+    
+    .btn-cart {
+      background: var(--gold-gradient); color: #000; border: none;
+      padding: 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem;
+      cursor: pointer; width: 100%; margin-bottom: 8px; transition: opacity 0.2s;
+    }
+    .btn-cart:hover { opacity: 0.9; }
+
+    .btn-wa {
+      background: var(--whatsapp-green); color: white; border: none;
+      padding: 10px; border-radius: 4px; font-weight: bold; font-size: 0.85rem;
+      cursor: pointer; width: 100%; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 6px;
+    }
+
+    /* Carrito Lateral */
+    .cart-drawer {
+      position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
+      background: var(--bg-card); z-index: 2000; transition: right 0.3s ease;
+      border-left: 1px solid var(--gold-primary); display: flex; flex-direction: column;
+    }
+    .cart-drawer.open { right: 0; }
+    
+    .cart-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px; border-bottom: 1px solid var(--gold-primary); font-weight: bold; color: var(--gold-primary);
+    }
+    .close-cart { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-main);}
+    
+    .cart-items { flex: 1; overflow-y: auto; padding: 15px; }
+    .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;}
+    .cart-item-info { font-size: 0.85rem; color: var(--text-main); }
+    .cart-item-price { font-weight: bold; color: var(--gold-primary); }
+    .cart-item-remove { color: #ff4c4c; background: none; border: none; cursor: pointer; font-size: 0.9rem; font-weight: bold;}
+
+    .cart-footer { padding: 15px; border-top: 1px solid var(--gold-primary); background: var(--bg-header);}
+    .cart-total { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; color: var(--gold-primary);}
+
+    /* Barra Inferior */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header);
+      display: flex; justify-content: space-around; padding: 10px 0;
+      border-top: 1px solid var(--gold-primary); z-index: 900;
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); cursor: pointer; position: relative; font-size: 0.7rem;}
+    .nav-item.active { color: var(--gold-primary); }
+    .nav-icon { font-size: 1.3rem; margin-bottom: 3px; }
+    .cart-badge {
+      position: absolute; top: -5px; right: -5px; background: var(--gold-primary); color: #000;
+      border-radius: 50%; width: 16px; height: 16px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; font-weight: bold;
+    }
+
+    #status-msg { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
+
+  <!-- Header Superior -->
+  <header>
+    <div class="top-bar">
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <div class="logo-container">
+        <!-- AQUÍ SE CARGA TU LOGOTIPO -->
+        <img src="logo.jpg" alt="Logo E&M" onerror="this.style.display='none'">
+        <h1>E&M TECHNOLOGY</h1>
+      </div>
+      <div class="user-actions">
+        <span onclick="toggleCart()" style="cursor:pointer">🛒</span>
+      </div>
+    </div>
+    <div class="search-bar-container">
+      <div class="search-input-wrapper">
+        <input type="text" id="searchInput" placeholder="Búsqueda de productos..." oninput="filtrarProductos()">
+        <button onclick="filtrarProductos()">🔍</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menú Lateral Izquierdo -->
+  <div class="side-menu" id="sideMenu">
+    <div class="menu-header">
+      <div class="menu-tab active">CATEGORÍAS</div>
+    </div>
+    <ul class="category-list" id="categoryList">
+      <li onclick="seleccionarCategoria('')">▪ Todas las categorías</li>
+    </ul>
+  </div>
+
+  <!-- Carrito Lateral Derecho -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <span>TU PEDIDO</span>
+      <button class="close-cart" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItemsContainer">
+      <div style="text-align:center; margin-top:30px; color:var(--text-muted); font-size:0.9rem;">El carrito está vacío.</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Subtotal:</span>
+        <span>S/ <span id="cartTotal">0.00</span></span>
+      </div>
+      <button class="btn-cart" onclick="enviarPedidoWhatsapp()">Finalizar Compra</button>
+    </div>
+  </div>
+
+  <!-- Contenido Principal -->
+  <div class="container">
+    <h2 class="section-title" id="tituloSeccion">Catálogo Virtual</h2>
+    <div id="status-msg">Cargando catálogo...</div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+
+  <!-- Barra de Navegación Inferior -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="seleccionarCategoria('')">
+      <span class="nav-icon">🏠</span><span>Inicio</span>
+    </div>
+    <div class="nav-item" onclick="toggleMenu()">
+      <span class="nav-icon">🔍</span><span>Categorías</span>
+    </div>
+    <div class="nav-item" onclick="toggleCart()">
+      <span class="nav-icon">🛒</span><span>Carrito</span>
+      <span class="cart-badge" id="cartBadgeMobile">0</span>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "51958890271";
+    let productos = [];
+    let carrito = JSON.parse(localStorage.getItem('em_cart')) || [];
+    let categoriaActual = "";
+
+    async function loadData() {
+      try {
+        const timestamp = new Date().getTime(); 
+        const response = await fetch(`catalogo_productos_limpio.csv?t=${timestamp}`);
+        if(!response.ok) throw new Error("No se encontró el archivo");
+        const csvText = await response.text();
+        procesarCSV(csvText);
+      } catch (error) {
+        document.getElementById("status-msg").textContent = "Error al cargar los productos. Verifica que el archivo CSV esté subido.";
+      }
+    }
+
+    function procesarCSV(text) {
+      const lineas = text.trim().split("\n");
+      productos = lineas.slice(1).map(linea => {
+        const row = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (row.length < 5) return null; 
+        return {
+          id: row[0] ? row[0].trim() : "",
+          categoria: row[1] ? row[1].trim() : "General",
+          nombre: row[2] ? row[2].replace(/"/g, '').trim() : "Producto",
+          precio: parseFloat(row[4] || 0)
+        };
+      }).filter(p => p !== null && p.nombre && p.precio > 0);
+
+      if(productos.length === 0) {
+        document.getElementById("status-msg").textContent = "El catálogo está vacío.";
+        return;
+      }
+      document.getElementById("status-msg").style.display = "none";
+      llenarMenuCategorias();
+      renderizarProductos(productos);
+      actualizarInterfazCarrito();
+    }
+
+    function llenarMenuCategorias() {
+      const categoriasUnicas = [...new Set(productos.map(p => p.categoria))];
+      const lista = document.getElementById("categoryList");
+      categoriasUnicas.forEach(cat => {
+        lista.innerHTML += `<li onclick="seleccionarCategoria('${cat}')">▪ ${cat}</li>`;
+      });
+    }
+
+    function seleccionarCategoria(cat) {
+      categoriaActual = cat;
+      document.getElementById("tituloSeccion").innerText = cat === "" ? "Catálogo Virtual" : cat;
+      document.getElementById("searchInput").value = "";
+      filtrarProductos();
+      closeAllDrawers();
+    }
+
+    function filtrarProductos() {
+      const busqueda = document.getElementById("searchInput").value.toLowerCase();
+      const filtrados = productos.filter(p => {
+        return p.nombre.toLowerCase().includes(busqueda) && (categoriaActual === "" || p.categoria === categoriaActual);
+      });
+      renderizarProductos(filtrados);
+    }
+
+    function renderizarProductos(lista) {
+      const grid = document.getElementById("productGrid");
+      if(lista.length === 0) {
+        grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:#999;'>No se encontraron productos.</p>";
+        return;
+      }
+      grid.innerHTML = lista.map(p => {
+        const txtWhastapp = encodeURIComponent(`Hola, me interesa comprar: *${p.nombre}* (S/ ${p.precio.toFixed(2)})`);
+        return `
+        <div class="card">
+          <div class="card-img-placeholder">E&M Tech</div>
+          <div class="card-title">${p.nombre}</div>
+          <div class="card-stock">✓ Disponible</div>
+          <div class="card-price">S/ ${p.precio.toFixed(2)}</div>
+          <button class="btn-cart" onclick="agregarAlCarrito('${p.id}', '${p.nombre}', ${p.precio})">Agregar Al Carrito</button>
+          <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${txtWhastapp}" target="_blank" class="btn-wa">
+            💬 Pedir Por WhatsApp
+          </a>
+        </div>
+      `}).join("");
+    }
+
+    function agregarAlCarrito(id, nombre, precio) {
+      const existe = carrito.find(item => item.id === id);
+      if (existe) existe.cantidad++;
+      else carrito.push({ id, nombre, precio, cantidad: 1 });
+      guardarCarrito();
+      toggleCart(); 
+    }
+
+    function eliminarDelCarrito(id) {
+      carrito = carrito.filter(item => item.id !== id);
+      guardarCarrito();
+    }
+
+    function guardarCarrito() {
+      localStorage.setItem('em_cart', JSON.stringify(carrito));
+      actualizarInterfazCarrito();
+    }
+
+    function actualizarInterfazCarrito() {
+      const container = document.getElementById("cartItemsContainer");
+      const totalSpan = document.getElementById("cartTotal");
+      const badgeMobile = document.getElementById("cartBadgeMobile");
+      let total = 0; let cantidadTotal = 0;
+
+      if(carrito.length === 0) {
+        container.innerHTML = '<div style="text-align:center; margin-top:30px; color:var(--text-muted); font-size:0.9rem;">El carrito está vacío.</div>';
+        totalSpan.innerText = "0.00"; badgeMobile.innerText = "0"; return;
+      }
+
+      let html = "";
+      carrito.forEach(item => {
+        total += (item.precio * item.cantidad);
+        cantidadTotal += item.cantidad;
+        html += `
+          <div class="cart-item">
+            <div style="flex:1;">
+              <div class="cart-item-info">${item.nombre}</div>
+              <div class="cart-item-info" style="color:var(--text-muted); margin-top:4px;">
+                ${item.cantidad} x <span class="cart-item-price">S/ ${item.precio.toFixed(2)}</span>
+              </div>
+            </div>
+            <button class="cart-item-remove" onclick="eliminarDelCarrito('${item.id}')">✕</button>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+      totalSpan.innerText = total.toFixed(2);
+      badgeMobile.innerText = cantidadTotal;
+    }
+
+    function enviarPedidoWhatsapp() {
+      if(carrito.length === 0) return alert("Tu carrito está vacío.");
+      let mensaje = "*NUEVO PEDIDO WEB - E&M TECHNOLOGY* %0A%0A";
+      let total = 0;
+      carrito.forEach(item => {
+        const sub = item.precio * item.cantidad;
+        total += sub;
+        mensaje += `- ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`;
+      });
+      mensaje += `%0A*TOTAL A PAGAR: S/ ${total.toFixed(2)}*%0A%0A`;
+      mensaje += "Mis datos para la boleta son:%0ANombre: %0ADNI/RUC: ";
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${mensaje}`, "_blank");
+    }
+
+    const menu = document.getElementById('sideMenu');
+    const cartMenu = document.getElementById('cartDrawer');
+    const overlay = document.getElementById('overlay');
+
+    function toggleMenu() {
+      const estaAbierto = menu.classList.contains('open');
+      closeAllDrawers();
+      if(!estaAbierto) { menu.classList.add('open'); overlay.classList.add('open'); }
+    }
+
+    function toggleCart() {
+      const estaAbierto = cartMenu.classList.contains('open');
+      closeAllDrawers();
+      if(!estaAbierto) { cartMenu.classList.add('open'); overlay.classList.add('open'); }
+    }
+
+    function closeAllDrawers() {
+      menu.classList.remove('open'); cartMenu.classList.remove('open'); overlay.classList.remove('open');
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
