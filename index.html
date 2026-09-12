@@ -66,9 +66,8 @@
       transition: border-color 0.3s, transform 0.2s;
     }
     .card:hover { border-color: var(--gold-primary); transform: translateY(-3px); }
-    .card-img-placeholder { width: 100%; height: 120px; background-color: #000; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; }
+    
     .card-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.3; height: 35px; overflow: hidden; }
-    .card-stock { font-size: 0.75rem; color: var(--gold-primary); margin-bottom: 8px; }
     .card-price { font-size: 1.1rem; font-weight: bold; color: var(--gold-primary); margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 8px;}
     
     .btn-cart { background: var(--gold-gradient); color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 8px; }
@@ -127,13 +126,14 @@
         <h1>TECHNOLOGY STORE</h1>
       </div>
       <div class="user-actions">
+        <!-- Modo Audio para accesibilidad -->
         <button id="btn-audio" onclick="toggleAudio()" style="background:none; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;" title="Modo Accesibilidad por Voz">🔊</button>
         <span onclick="toggleCart()" style="cursor:pointer">🛒 <span id="cartCountTop" style="font-size:0.8rem; background:var(--gold-primary); color:#000; padding:2px 6px; border-radius:10px; font-weight:bold;">0</span></span>
       </div>
     </div>
     <div class="search-bar-container">
       <div class="search-input-wrapper">
-        <input type="text" id="searchInput" placeholder="Búsqueda interactiva de productos..." oninput="filtrarProductos()">
+        <input type="text" id="searchInput" placeholder="Buscar productos (ej. disco ssd, laptop hp)..." oninput="filtrarProductos()">
         <button onclick="filtrarProductos()">🔍</button>
       </div>
       <div class="filter-wrapper">
@@ -189,35 +189,38 @@
   </div>
 
   <script>
+    // Configuración Base
     const WHATSAPP_NUMBER = "51999715081";
     let productos = [];
     let carrito = JSON.parse(localStorage.getItem('em_cart_2030')) || [];
     let categoriaActual = "";
     let audioHabilitado = false;
 
-    // Quitar tildes y convertir a minúsculas
+    // Normalizar texto (quita tildes y pasa a minúscula)
     function normalizar(texto) {
       return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     }
 
+    // 1. Carga Híbrida (Online / Offline)
     async function loadData() {
       try {
         const res = await fetch(`catalogo_productos_limpio.csv?t=${new Date().getTime()}`);
         if(!res.ok) throw new Error("No internet");
         const txt = await res.text();
-        localStorage.setItem('em_cache_csv', txt);
+        localStorage.setItem('em_cache_csv', txt); 
         procesarCSV(txt);
       } catch (e) {
         const cache = localStorage.getItem('em_cache_csv');
         if(cache) {
-          document.getElementById("status-msg").textContent = "📡 MODO OFFLINE";
+          document.getElementById("status-msg").textContent = "📡 MODO OFFLINE (Datos Cacheados)";
           setTimeout(() => procesarCSV(cache), 1500);
         } else {
-          document.getElementById("status-msg").textContent = "❌ Conéctate a internet para descargar el catálogo.";
+          document.getElementById("status-msg").textContent = "❌ Conéctate a internet para descargar el catálogo por primera vez.";
         }
       }
     }
 
+    // 2. Procesamiento de Datos
     function procesarCSV(text) {
       productos = text.trim().split("\n").slice(1).map(linea => {
         const r = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
@@ -227,6 +230,7 @@
 
       document.getElementById("status-msg").style.display = "none";
       
+      // Ajustar filtro de precios máximo automáticamente
       if(productos.length > 0) {
         const maxP = Math.ceil(Math.max(...productos.map(p => p.precio)));
         const slider = document.getElementById("priceFilter");
@@ -235,22 +239,45 @@
       }
 
       const cats = [...new Set(productos.map(p => p.categoria))];
+      document.getElementById("categoryList").innerHTML = `<li style="padding:15px; border-bottom:1px solid #333; cursor:pointer;" onclick="seleccionarCategoria('')">▪ Ver Todo</li>`;
       cats.forEach(c => document.getElementById("categoryList").innerHTML += `<li style="padding:15px; border-bottom:1px solid #333; cursor:pointer;" onclick="seleccionarCategoria('${c}')">▪ ${c}</li>`);
       
       filtrarProductos();
       actualizarCarrito();
     }
 
+    // 3. Sistema de Smart Branding (Logos de Marcas en lugar de fotos rotas)
+    function obtenerLogoMarca(nombre) {
+      const n = normalizar(nombre);
+      let logo = "";
+      if (n.includes("hp")) logo = "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg";
+      else if (n.includes("lenovo")) logo = "https://upload.wikimedia.org/wikipedia/commons/b/b8/Lenovo_logo_2015.svg";
+      else if (n.includes("acer")) logo = "https://upload.wikimedia.org/wikipedia/commons/0/00/Acer_2011.svg";
+      else if (n.includes("asus")) logo = "https://upload.wikimedia.org/wikipedia/commons/2/2e/ASUS_Logo.svg";
+      else if (n.includes("tp-link") || n.includes("tplink") || n.includes("tp link")) logo = "https://upload.wikimedia.org/wikipedia/commons/0/07/TP-Link_Logo.svg";
+      else if (n.includes("dahua")) logo = "https://upload.wikimedia.org/wikipedia/commons/3/30/Dahua_Technology_logo.svg";
+      else if (n.includes("kingston")) logo = "https://upload.wikimedia.org/wikipedia/commons/2/29/Kingston_Technology_logo.svg";
+      else if (n.includes("epson")) logo = "https://upload.wikimedia.org/wikipedia/commons/1/18/Epson_logo.svg";
+      else if (n.includes("intel")) logo = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Intel_logo_%282020%2C_light_blue%29.svg";
+      else if (n.includes("logitech")) logo = "https://upload.wikimedia.org/wikipedia/commons/1/17/Logitech_logo.svg";
+      else if (n.includes("amd") || n.includes("ryzen")) logo = "https://upload.wikimedia.org/wikipedia/commons/7/7c/AMD_Logo.svg";
+      else return `<div style="font-size:3rem;">💻</div>`; // Icono genérico si no reconoce la marca
+      
+      return `<img src="${logo}" style="max-width:70%; max-height:50px; object-fit:contain; filter: drop-shadow(0 0 8px rgba(255,255,255,0.1));" alt="Marca">`;
+    }
+
+    // 4. Filtros Interactivos y Renderizado (Soporta múltiples palabras y rango de precio)
     function seleccionarCategoria(c) {
       categoriaActual = c;
       document.getElementById("tituloSeccion").innerText = c || "Catálogo Virtual";
+      document.getElementById("searchInput").value = "";
       closeAllDrawers();
       filtrarProductos();
     }
 
     function filtrarProductos() {
       const q = normalizar(document.getElementById("searchInput").value.trim());
-      const terms = q.split(/\s+/); // Permite buscar varias palabras (ej. "disco ssd")
+      const terms = q.split(/\s+/); 
       const maxPrecio = parseFloat(document.getElementById("priceFilter").value);
       document.getElementById("priceLabel").innerText = maxPrecio;
 
@@ -262,6 +289,7 @@
         return matchText && matchCat && matchPrice;
       });
 
+      document.getElementById("tituloSeccion").innerText = categoriaActual || "Catálogo Virtual";
       renderizarGrid(filtrados);
     }
 
@@ -270,7 +298,7 @@
       document.getElementById("tituloSeccion").innerText = "Productos Destacados";
       document.getElementById("searchInput").value = "";
       
-      // Selecciona 8 productos aleatorios para mostrar
+      // Selecciona 8 productos aleatorios
       const destacados = [...productos].sort(() => 0.5 - Math.random()).slice(0, 8);
       renderizarGrid(destacados);
       closeAllDrawers();
@@ -280,9 +308,14 @@
       const grid = document.getElementById("productGrid");
       if(lista.length === 0) { grid.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No se encontraron resultados.</p>"; return; }
 
-      grid.innerHTML = lista.map(p => `
+      grid.innerHTML = lista.map(p => {
+        const smartImage = obtenerLogoMarca(p.nombre);
+
+        return `
         <div class="card">
-          <div class="card-img-placeholder">Tech 2030</div>
+          <div style="width: 100%; height: 120px; background: radial-gradient(circle, #1a1a1a, #000); margin-bottom: 10px; border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; box-shadow: inset 0 0 15px rgba(0,0,0,0.8);">
+            ${smartImage}
+          </div>
           <div class="card-title">${p.nombre}</div>
           <div class="card-price">
             S/ ${p.precio.toFixed(2)}
@@ -291,9 +324,10 @@
           <button class="btn-cart" onclick="addCart('${p.id}','${p.nombre}',${p.precio})">✚ Agregar</button>
           <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, deseo: ' + p.nombre)}" target="_blank" class="btn-wa">💬 Comprar Directo</a>
         </div>
-      `).join("");
+      `}).join("");
     }
 
+    // 5. Lógica de Carrito
     function addCart(id, nom, pre) {
       const ex = carrito.find(i => i.id === id);
       if(ex) ex.cantidad++; else carrito.push({id, nombre:nom, precio:pre, cantidad:1});
@@ -331,6 +365,7 @@
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
     }
 
+    // 6. Asistencia de Voz (Web Speech API)
     function toggleAudio() {
       audioHabilitado = !audioHabilitado;
       document.getElementById('btn-audio').style.color = audioHabilitado ? "var(--gold-primary)" : "var(--text-muted)";
@@ -345,6 +380,7 @@
       window.speechSynthesis.speak(ut);
     }
 
+    // 7. Inteligencia Artificial / Chatbot Local
     function toggleChat() { document.getElementById('chatWindow').classList.toggle('open'); }
     
     function enviarMensajeBot() {
@@ -360,7 +396,7 @@
       setTimeout(() => {
         let res = "No encontré esa información. Usa la barra superior para buscar componentes específicos.";
         
-        if (val.includes("hola") || val.includes("buenos")) res = "¡Hola! Bienvenido a Technology Store. ¿Buscas laptops o accesorios?";
+        if (val.includes("hola") || val.includes("buenos") || val.includes("buenas")) res = "¡Hola! Bienvenido a Technology Store. ¿Buscas laptops o accesorios?";
         else if (val.includes("direccion") || val.includes("ubicacion") || val.includes("donde")) res = "Nuestra sede operativa está en Otuzco, La Libertad, Perú. Hacemos envíos coordinados de forma segura.";
         else if (val.includes("nombre") || val.includes("tienda") || val.includes("descripcion")) res = "Somos TECHNOLOGY STORE, tu aliado en innovación. Brindamos lo mejor en venta y servicio técnico especializado.";
         else if (val.includes("garantia")) res = "Ofrecemos garantía directa. Como novedad, te otorgamos 1 AÑO completo de Garantía Extendida Premium en compras de alto valor (superiores a S/ 1000).";
@@ -380,10 +416,12 @@
       }, 700);
     }
 
+    // 8. Controles UI
     function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
     function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
     function closeAllDrawers() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
+    // Arranque
     loadData();
   </script>
 </body>
