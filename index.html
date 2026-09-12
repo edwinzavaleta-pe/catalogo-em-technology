@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>E&M Technology Store | Catálogo Inteligente</title>
+  <title>Technology Store | Catálogo 2030</title>
   <style>
-    /* Estilos Premium Black & Gold */
+    /* Diseño Premium 2030 - Black & Gold */
     :root {
       --bg-main: #0a0a0a;
       --bg-header: #000000;
@@ -20,7 +20,7 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
     
-    body { background-color: var(--bg-main); color: var(--text-main); padding-top: 120px; padding-bottom: 80px; }
+    body { background-color: var(--bg-main); color: var(--text-main); padding-top: 140px; padding-bottom: 70px; }
 
     /* Header Superior */
     header {
@@ -31,402 +31,344 @@
     
     .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; height: 60px; }
     .menu-btn { background: none; border: none; color: var(--gold-primary); font-size: 1.5rem; cursor: pointer; }
-    
+
     .logo-container { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .logo-container img { height: 40px; width: 40px; border-radius: 50%; border: 1px solid var(--gold-primary); object-fit: cover; }
     .logo-container h1 { 
-      font-size: 1.2rem; font-weight: 700; margin: 0; 
+      font-size: 1.2rem; font-weight: 900; margin: 0; 
       background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px;
     }
-    .user-actions { display: flex; gap: 15px; font-size: 1.2rem; color: var(--gold-primary); }
 
-    /* Buscador Avanzado */
+    .user-actions { display: flex; gap: 15px; font-size: 1.2rem; color: var(--gold-primary); align-items: center; }
+
+    /* Buscador y Filtro de Precio */
     .search-bar-container { background-color: var(--bg-header); padding: 10px 15px; }
     .search-input-wrapper {
-      display: flex; background: var(--bg-card); border: 1px solid var(--gold-primary); border-radius: 4px; overflow: hidden;
+      display: flex; background: var(--bg-card); border: 1px solid var(--gold-primary); border-radius: 4px; overflow: hidden; margin-bottom: 10px;
     }
     .search-input-wrapper input {
       flex: 1; padding: 10px 12px; border: none; outline: none; background: transparent; color: var(--text-main); font-size: 0.9rem;
     }
-    .search-input-wrapper input::placeholder { color: var(--text-muted); }
+    .search-input-wrapper button { background: var(--gold-primary); color: #000; border: none; padding: 0 15px; cursor: pointer; font-weight: bold; }
+    
+    .filter-wrapper { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--gold-primary); }
+    .filter-wrapper input[type=range] { flex: 1; accent-color: var(--gold-primary); }
 
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.8); z-index: 1500; display: none; }
-    .overlay.open { display: block; }
-
-    /* Contenedor y Grilla */
+    /* Grilla de Productos */
     .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
-    .section-title { font-size: 1.2rem; font-weight: 600; margin: 10px 0 15px; color: var(--gold-primary); text-transform: uppercase; }
-
+    .section-title { font-size: 1.2rem; font-weight: 600; margin: 10px 0 20px; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1px;}
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-    @media (min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; } }
-
-    /* Tarjeta Producto */
+    
+    /* Tarjetas */
     .card {
       background: var(--bg-card); border-radius: 8px; padding: 15px; text-align: center;
       border: 1px solid var(--border-color); display: flex; flex-direction: column; position: relative;
+      transition: border-color 0.3s, transform 0.2s;
     }
-    .card-img-placeholder {
-      width: 100%; height: 120px; background-color: var(--bg-header); border: 1px dashed var(--border-color);
-      margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem;
-    }
-    .card-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; height: 35px; overflow: hidden; }
+    .card:hover { border-color: var(--gold-primary); transform: translateY(-3px); }
+    .card-img-placeholder { width: 100%; height: 120px; background-color: #000; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; }
+    .card-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; line-height: 1.3; height: 35px; overflow: hidden; }
     .card-stock { font-size: 0.75rem; color: var(--gold-primary); margin-bottom: 8px; }
-    .card-price { font-size: 1.1rem; font-weight: bold; color: var(--gold-primary); margin-bottom: 12px; }
+    .card-price { font-size: 1.1rem; font-weight: bold; color: var(--gold-primary); margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 8px;}
     
-    .btn-cart {
-      background: var(--gold-gradient); color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 8px;
-    }
-    .btn-wa {
-      background: var(--whatsapp-green); color: white; border: none; padding: 10px; border-radius: 4px; font-weight: bold; width: 100%; text-decoration: none; display: flex; justify-content: center; gap: 6px;
-    }
+    .btn-cart { background: var(--gold-gradient); color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 8px; }
+    .btn-wa { background: var(--whatsapp-green); color: white; border: none; padding: 10px; border-radius: 4px; font-weight: bold; width: 100%; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 6px; }
 
-    /* Asistente IA 2030 (Chatbot) */
-    .chat-widget { position: fixed; bottom: 80px; right: 20px; z-index: 1800; }
-    .chat-btn {
-      width: 60px; height: 60px; border-radius: 50%; background: var(--gold-gradient); border: 2px solid #fff;
-      font-size: 1.8rem; cursor: pointer; box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s;
+    /* Asistente Virtual 2030 (Chatbot) */
+    .bot-float {
+      position: fixed; bottom: 80px; right: 15px; width: 55px; height: 55px;
+      background: var(--gold-gradient); color: #000; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); z-index: 1000; cursor: pointer; border: none; transition: transform 0.3s;
     }
-    .chat-btn:hover { transform: scale(1.1); }
+    .bot-float:hover { transform: scale(1.1); }
     .chat-window {
-      position: absolute; bottom: 70px; right: 0; width: 320px; height: 450px;
-      background: rgba(10,10,10,0.95); backdrop-filter: blur(10px); border: 1px solid var(--gold-primary);
-      border-radius: 12px; display: none; flex-direction: column; overflow: hidden; box-shadow: -5px 5px 20px rgba(0,0,0,0.5);
+      position: fixed; bottom: 145px; right: 15px; width: 320px; height: 400px;
+      background: var(--bg-card); border: 1px solid var(--gold-primary); border-radius: 12px; z-index: 1000; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
     }
     .chat-window.open { display: flex; }
-    .chat-header {
-      background: var(--gold-gradient); color: #000; padding: 15px; font-weight: bold; display: flex; justify-content: space-between;
-    }
-    .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .msg-bot { background: var(--bg-card); padding: 10px; border-radius: 10px 10px 10px 0; border: 1px solid var(--gold-primary); font-size: 0.85rem; width: 85%; }
-    .msg-user { background: var(--gold-primary); color: #000; padding: 10px; border-radius: 10px 10px 0 10px; font-size: 0.85rem; align-self: flex-end; max-width: 85%; }
-    .chat-footer { display: flex; padding: 10px; background: var(--bg-header); border-top: 1px solid var(--border-color); }
-    .chat-footer input { flex: 1; padding: 10px; border: none; border-radius: 4px; background: var(--bg-card); color: white; outline: none; }
-    .btn-mic { background: none; border: none; color: var(--gold-primary); font-size: 1.2rem; cursor: pointer; padding: 0 10px; }
+    .chat-header { background: var(--bg-header); padding: 15px; border-bottom: 1px solid var(--gold-primary); color: var(--gold-primary); font-weight: bold; display: flex; justify-content: space-between; }
+    .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .msg { padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; max-width: 85%; }
+    .msg.bot { background: #222; color: var(--gold-primary); align-self: flex-start; border-top-left-radius: 0; }
+    .msg.user { background: var(--gold-gradient); color: #000; align-self: flex-end; border-top-right-radius: 0; font-weight: bold;}
+    .chat-input-area { display: flex; border-top: 1px solid var(--border-color); }
+    .chat-input-area input { flex: 1; padding: 12px; background: transparent; border: none; color: white; outline: none; }
+    .chat-input-area button { background: transparent; color: var(--gold-primary); border: none; padding: 0 15px; cursor: pointer; font-weight: bold; }
 
     /* Menú y Carrito Lateral */
-    .cart-drawer, .side-menu {
-      position: fixed; top: 0; height: 100vh; background: var(--bg-card); z-index: 2000; transition: 0.3s ease; display: flex; flex-direction: column;
-    }
-    .side-menu { left: -100%; width: 280px; border-right: 1px solid var(--gold-primary); }
-    .side-menu.open { left: 0; }
-    .cart-drawer { right: -100%; width: 300px; border-left: 1px solid var(--gold-primary); }
-    .cart-drawer.open { right: 0; }
-    
-    .cart-header, .menu-header { padding: 15px; border-bottom: 1px solid var(--gold-primary); font-weight: bold; color: var(--gold-primary); display: flex; justify-content: space-between;}
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.8); z-index: 1500; display: none; }
+    .overlay.open { display: block; }
+    .side-menu, .cart-drawer { position: fixed; top: 0; width: 280px; height: 100vh; background: var(--bg-card); z-index: 2000; transition: 0.3s ease; overflow-y: auto; }
+    .side-menu { left: -100%; border-right: 1px solid var(--gold-primary); }
+    .cart-drawer { right: -100%; width: 300px; border-left: 1px solid var(--gold-primary); display: flex; flex-direction: column; }
+    .side-menu.open { left: 0; } .cart-drawer.open { right: 0; }
+    .cart-header { padding: 15px; border-bottom: 1px solid var(--gold-primary); font-weight: bold; color: var(--gold-primary); display: flex; justify-content: space-between;}
     .cart-items { flex: 1; overflow-y: auto; padding: 15px; }
     .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 10px;}
     .cart-footer { padding: 15px; border-top: 1px solid var(--gold-primary); background: var(--bg-header);}
     
-    .category-list { list-style: none; }
-    .category-list li { padding: 15px 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; }
-    .category-list li:hover { color: var(--gold-primary); }
-
-    /* Navegación Móvil */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--gold-primary); z-index: 900;
-    }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); cursor: pointer; font-size: 0.7rem; position: relative;}
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid var(--gold-primary); z-index: 900; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); cursor: pointer; position: relative; font-size: 0.7rem;}
     .nav-icon { font-size: 1.3rem; margin-bottom: 3px; }
-    .cart-badge { position: absolute; top: -5px; right: -5px; background: var(--gold-primary); color: #000; border-radius: 50%; width: 16px; height: 16px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    #status-msg { text-align: center; padding: 40px; color: var(--gold-primary); }
+    #status-msg { text-align: center; padding: 40px 20px; color: var(--gold-primary); font-weight: bold;}
   </style>
 </head>
 <body>
 
   <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
 
+  <!-- Header Superior -->
   <header>
     <div class="top-bar">
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
       <div class="logo-container">
         <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
-        <h1>E&M TECHNOLOGY</h1>
+        <h1>TECHNOLOGY STORE</h1>
       </div>
-      <div class="user-actions"><span onclick="toggleCart()" style="cursor:pointer">🛒</span></div>
+      <div class="user-actions">
+        <!-- Modo Audio para accesibilidad -->
+        <button id="btn-audio" onclick="toggleAudio()" style="background:none; border:none; color:var(--text-muted); font-size:1.3rem; cursor:pointer;" title="Modo Accesibilidad por Voz">🔊</button>
+        <span onclick="toggleCart()" style="cursor:pointer">🛒 <span id="cartCountTop" style="font-size:0.8rem; background:var(--gold-primary); color:#000; padding:2px 6px; border-radius:10px; font-weight:bold;">0</span></span>
+      </div>
     </div>
     <div class="search-bar-container">
       <div class="search-input-wrapper">
-        <input type="text" id="searchInput" placeholder="Buscar por marca o modelo..." oninput="filtrarProductos()">
+        <input type="text" id="searchInput" placeholder="Búsqueda interactiva de productos..." oninput="filtrarProductos()">
+        <button onclick="filtrarProductos()">🔍</button>
+      </div>
+      <div class="filter-wrapper">
+        <span>Precio Máx: S/ <span id="priceLabel">5000</span></span>
+        <input type="range" id="priceFilter" min="0" max="6000" step="50" value="6000" oninput="filtrarProductos()">
       </div>
     </div>
   </header>
 
+  <!-- Menú Lateral -->
   <div class="side-menu" id="sideMenu">
-    <div class="menu-header"><span>CATEGORÍAS</span><span onclick="toggleMenu()" style="cursor:pointer">✕</span></div>
-    <ul class="category-list" id="categoryList">
-      <li onclick="seleccionarCategoria('')">▪ Todas las categorías</li>
+    <div style="padding:15px; border-bottom:1px solid var(--gold-primary); color:var(--gold-primary); font-weight:bold; text-align:center;">CATEGORÍAS</div>
+    <ul id="categoryList" style="list-style:none;">
+      <li style="padding:15px; border-bottom:1px solid var(--border-color); cursor:pointer;" onclick="seleccionarCategoria('')">▪ Ver Todo</li>
     </ul>
   </div>
 
+  <!-- Carrito -->
   <div class="cart-drawer" id="cartDrawer">
-    <div class="cart-header"><span>TU PEDIDO</span><span onclick="toggleCart()" style="cursor:pointer">✕</span></div>
-    <div class="cart-items" id="cartItemsContainer"></div>
+    <div class="cart-header"><span>TU PEDIDO</span><button onclick="toggleCart()" style="background:none; border:none; color:white; font-size:1.2rem;">✕</button></div>
+    <div class="cart-items" id="cartItemsContainer"><div style="text-align:center; margin-top:30px; color:#666;">Vacío</div></div>
     <div class="cart-footer">
-      <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; color: var(--gold-primary);">
-        <span>Total:</span><span>S/ <span id="cartTotal">0.00</span></span>
-      </div>
-      <button class="btn-cart" onclick="enviarPedidoWhatsapp()">Finalizar Compra</button>
+      <div style="display:flex; justify-content:space-between; margin-bottom:15px; color:var(--gold-primary); font-weight:bold;"><span>Total:</span><span>S/ <span id="cartTotal">0.00</span></span></div>
+      <button class="btn-cart" onclick="enviarPedidoWhatsapp()">Procesar Compra ➔</button>
     </div>
   </div>
 
+  <!-- Catálogo -->
   <div class="container">
     <h2 class="section-title" id="tituloSeccion">Catálogo Virtual</h2>
-    <div id="status-msg">Cargando catálogo (Modo Offline activo)...</div>
+    <div id="status-msg">Cargando base de datos...</div>
     <div class="grid" id="productGrid"></div>
   </div>
 
-  <!-- Chatbot Inteligente -->
-  <div class="chat-widget">
-    <div class="chat-window" id="chatWindow">
-      <div class="chat-header">
-        <span>🤖 Asistente Virtual E&M</span>
-        <span style="cursor:pointer" onclick="toggleChat()">✕</span>
-      </div>
-      <div class="chat-body" id="chatMsgs">
-        <div class="msg-bot">¡Hola! Soy tu asistente inteligente con accesibilidad de audio. ¿Buscas algún producto, marca en especial o necesitas saber nuestra dirección?</div>
-      </div>
-      <div class="chat-footer">
-        <button class="btn-mic" id="btnMic" onclick="iniciarReconocimientoVoz()" title="Hablar por micrófono">🎤</button>
-        <input type="text" id="chatInput" placeholder="Escribe aquí..." onkeypress="handleChat(event)">
-      </div>
+  <!-- Chatbot 2030 -->
+  <button class="bot-float" onclick="toggleChat()">🤖</button>
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header"><span>Asistente IA - Store</span><span style="cursor:pointer;" onclick="toggleChat()">✕</span></div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">¡Hola! Soy la IA de Technology Store. Pregúntame sobre direcciones, garantías, marcas recomendadas o pídemelo buscar un producto.</div>
     </div>
-    <button class="chat-btn" onclick="toggleChat()">🤖</button>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe aquí..." onkeypress="if(event.key === 'Enter') enviarMensajeBot()">
+      <button onclick="enviarMensajeBot()">➤</button>
+    </div>
   </div>
 
+  <!-- Barra Navegación Inferior -->
   <div class="bottom-nav">
     <div class="nav-item" onclick="seleccionarCategoria('')"><span class="nav-icon">🏠</span><span>Inicio</span></div>
-    <div class="nav-item" onclick="toggleMenu()"><span class="nav-icon">🔍</span><span>Categorías</span></div>
-    <div class="nav-item" onclick="toggleCart()"><span class="nav-icon">🛒</span><span>Carrito</span><span class="cart-badge" id="cartBadgeMobile">0</span></div>
+    <div class="nav-item" onclick="toggleMenu()"><span class="nav-icon">📁</span><span>Filtros</span></div>
+    <div class="nav-item" onclick="toggleCart()"><span class="nav-icon">🛒</span><span>Caja</span></div>
   </div>
 
   <script>
-    const WHATSAPP_NUMBER = "51958890271";
+    // Configuración Base
+    const WHATSAPP_NUMBER = "51999715081";
     let productos = [];
-    let carrito = JSON.parse(localStorage.getItem('em_cart')) || [];
+    let carrito = JSON.parse(localStorage.getItem('em_cart_2030')) || [];
     let categoriaActual = "";
+    let audioHabilitado = false;
 
-    // 1. CARGA DE DATOS OFFLINE/ONLINE
+    // 1. Carga Híbrida (Online / Offline)
     async function loadData() {
       try {
-        const response = await fetch(`catalogo_productos_limpio.csv?t=${new Date().getTime()}`);
-        if(!response.ok) throw new Error("Fallo red");
-        const csvText = await response.text();
-        localStorage.setItem('em_catalog_cache', csvText); // Guardar para modo sin internet
-        procesarCSV(csvText);
-      } catch (error) {
-        const cache = localStorage.getItem('em_catalog_cache');
+        const res = await fetch(`catalogo_productos_limpio.csv?t=${new Date().getTime()}`);
+        if(!res.ok) throw new Error("No internet");
+        const txt = await res.text();
+        localStorage.setItem('em_cache_csv', txt); // Guarda para offline
+        procesarCSV(txt);
+      } catch (e) {
+        const cache = localStorage.getItem('em_cache_csv');
         if(cache) {
-          procesarCSV(cache);
-          document.getElementById("status-msg").textContent = "Estás navegando sin conexión a internet.";
-          setTimeout(() => document.getElementById("status-msg").style.display = "none", 3000);
+          document.getElementById("status-msg").textContent = "📡 MODO OFFLINE (Datos Cacheados)";
+          setTimeout(() => procesarCSV(cache), 1500);
         } else {
-          document.getElementById("status-msg").textContent = "Conéctate a internet por primera vez para descargar el catálogo.";
+          document.getElementById("status-msg").textContent = "❌ Conéctate a internet para descargar el catálogo por primera vez.";
         }
       }
     }
 
+    // 2. Procesamiento de Datos
     function procesarCSV(text) {
-      const lineas = text.trim().split("\n");
-      productos = lineas.slice(1).map(linea => {
-        const row = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        if (row.length < 5) return null; 
-        return {
-          id: row[0] ? row[0].trim() : "",
-          categoria: row[1] ? row[1].trim() : "General",
-          nombre: row[2] ? row[2].replace(/"/g, '').trim() : "Producto",
-          precio: parseFloat(row[4] || 0)
-        };
+      productos = text.trim().split("\n").slice(1).map(linea => {
+        const r = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (r.length < 5) return null; 
+        return { id: r[0], categoria: r[1], nombre: r[2].replace(/"/g, ''), precio: parseFloat(r[4] || 0) };
       }).filter(p => p !== null && p.nombre && p.precio > 0);
 
       document.getElementById("status-msg").style.display = "none";
-      llenarMenuCategorias();
-      renderizarProductos(productos);
-      actualizarInterfazCarrito();
-    }
-
-    // 2. BUSCADOR AVANZADO MEJORADO
-    function filtrarProductos() {
-      const busquedaTexto = document.getElementById("searchInput").value.toLowerCase().trim();
-      const palabrasClave = busquedaTexto.split(" "); // Permite buscar "laptop hp" sin importar el orden
       
-      const filtrados = productos.filter(p => {
-        const nombreCat = (p.nombre + " " + p.categoria).toLowerCase();
-        const coincideBusqueda = palabrasClave.every(palabra => nombreCat.includes(palabra));
-        const coincideCat = (categoriaActual === "" || p.categoria === categoriaActual);
-        return coincideBusqueda && coincideCat;
-      });
-      renderizarProductos(filtrados);
-    }
+      // Ajustar filtro de precios máximo automáticamente
+      if(productos.length > 0) {
+        const maxP = Math.ceil(Math.max(...productos.map(p => p.precio)));
+        const slider = document.getElementById("priceFilter");
+        slider.max = maxP; slider.value = maxP;
+        document.getElementById("priceLabel").innerText = maxP;
+      }
 
-    function seleccionarCategoria(cat) {
-      categoriaActual = cat;
-      document.getElementById("tituloSeccion").innerText = cat === "" ? "Catálogo Virtual" : cat;
-      document.getElementById("searchInput").value = "";
+      const cats = [...new Set(productos.map(p => p.categoria))];
+      cats.forEach(c => document.getElementById("categoryList").innerHTML += `<li style="padding:15px; border-bottom:1px solid #333; cursor:pointer;" onclick="seleccionarCategoria('${c}')">▪ ${c}</li>`);
+      
       filtrarProductos();
+      actualizarCarrito();
+    }
+
+    // 3. Filtros Interactivos (Buscador + Precio)
+    function seleccionarCategoria(c) {
+      categoriaActual = c;
+      document.getElementById("tituloSeccion").innerText = c || "Catálogo Virtual";
       closeAllDrawers();
+      filtrarProductos();
     }
 
-    function renderizarProductos(lista) {
+    function filtrarProductos() {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      const maxPrecio = document.getElementById("priceFilter").value;
+      document.getElementById("priceLabel").innerText = maxPrecio;
+
+      const filtrados = productos.filter(p => 
+        p.nombre.toLowerCase().includes(q) && 
+        (categoriaActual === "" || p.categoria === categoriaActual) &&
+        p.precio <= maxPrecio
+      );
+
       const grid = document.getElementById("productGrid");
-      if(lista.length === 0) {
-        grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color:var(--text-muted);'>No encontramos productos con ese nombre.</p>";
-        return;
-      }
-      grid.innerHTML = lista.map(p => {
-        const txtWhastapp = encodeURIComponent(`Hola, me interesa comprar: *${p.nombre}* (S/ ${p.precio.toFixed(2)})`);
-        return `
+      if(filtrados.length === 0) { grid.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>Sin resultados.</p>"; return; }
+
+      grid.innerHTML = filtrados.map(p => `
         <div class="card">
-          <div class="card-img-placeholder">E&M Tech</div>
+          <div class="card-img-placeholder">Tech 2030</div>
           <div class="card-title">${p.nombre}</div>
-          <div class="card-stock">✓ Disponible</div>
-          <div class="card-price">S/ ${p.precio.toFixed(2)}</div>
-          <button class="btn-cart" onclick="agregarAlCarrito('${p.id}', '${p.nombre}', ${p.precio})">Agregar Al Carrito</button>
-          <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${txtWhastapp}" target="_blank" class="btn-wa">💬 Comprar ya</a>
-        </div>
-      `}).join("");
-    }
-
-    // 3. IA CHATBOT CON SÍNTESIS DE VOZ Y ACCESIBILIDAD
-    function toggleChat() { 
-      const chat = document.getElementById('chatWindow');
-      chat.classList.toggle('open');
-      if(chat.classList.contains('open')) emitirAudio("Hola, soy tu asistente virtual, ¿en qué te ayudo?");
-    }
-
-    function handleChat(e) {
-      if (e.key === 'Enter' && e.target.value.trim() !== '') {
-        procesarInputUsuario(e.target.value.trim());
-        e.target.value = '';
-      }
-    }
-
-    // Reconocimiento de Voz (Web Speech API)
-    function iniciarReconocimientoVoz() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) return alert("Tu navegador no soporta búsqueda por voz.");
-      
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'es-PE';
-      recognition.start();
-      document.getElementById('btnMic').style.color = "red";
-
-      recognition.onresult = function(event) {
-        const transcripcion = event.results[0][0].transcript;
-        procesarInputUsuario(transcripcion);
-        document.getElementById('btnMic').style.color = "var(--gold-primary)";
-      };
-      recognition.onerror = function() { document.getElementById('btnMic').style.color = "var(--gold-primary)"; };
-    }
-
-    function procesarInputUsuario(texto) {
-      const box = document.getElementById('chatMsgs');
-      box.innerHTML += `<div class="msg-user">${texto}</div>`;
-      box.scrollTop = box.scrollHeight;
-      
-      setTimeout(() => generarRespuestaBot(texto.toLowerCase()), 500);
-    }
-
-    function generarRespuestaBot(input) {
-      let respuesta = "Disculpa, no entendí bien. Puedes preguntarme por una marca (ej. HP, Lenovo), por nuestra garantía o dirección.";
-      const box = document.getElementById('chatMsgs');
-
-      // Reglas de negocio del bot
-      if (input.includes("direccion") || input.includes("ubicacion") || input.includes("dónde") || input.includes("donde")) {
-        respuesta = "Somos E&M Technology Store. Nuestra sede principal está ubicada en Otuzco, La Libertad, Perú. ¡Estaremos encantados de recibirte!";
-      } 
-      else if (input.includes("garantia") || input.includes("garantía")) {
-        respuesta = "Para tu tranquilidad, ofrecemos 1 año de garantía en todos nuestros productos de alto precio, como Laptops y Computadoras.";
-      }
-      else if (input.includes("hp") || input.includes("lenovo") || input.includes("acer") || input.includes("recomienda") || input.includes("busco")) {
-        // Buscar recomendación en el catálogo real
-        const coincidencias = productos.filter(p => p.nombre.toLowerCase().includes(input.replace('busco','').replace('recomienda','').trim()) || p.categoria.toLowerCase().includes(input));
-        
-        if(coincidencias.length > 0) {
-          const item = coincidencias[0]; // Recomienda el primero
-          respuesta = `Te recomiendo excelente tecnología: ${item.nombre}. Su precio actual es de ${item.precio} soles. Búscalo en nuestro catálogo para agregarlo al carrito.`;
-          
-          // Escribir en el buscador automáticamente
-          document.getElementById("searchInput").value = item.categoria;
-          filtrarProductos();
-        } else {
-          respuesta = "Actualmente no tengo recomendaciones exactas para esa solicitud en stock, pero revisa nuestras categorías principales.";
-        }
-      }
-
-      box.innerHTML += `<div class="msg-bot">${respuesta}</div>`;
-      box.scrollTop = box.scrollHeight;
-      emitirAudio(respuesta);
-    }
-
-    function emitirAudio(texto) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Detener audios previos
-        const utterance = new SpeechSynthesisUtterance(texto);
-        utterance.lang = 'es-PE'; // Acento peruano/latino
-        utterance.rate = 1.0;
-        window.speechSynthesis.speak(utterance);
-      }
-    }
-
-    // 4. FUNCIONES DE UI Y CARRITO (Iguales al anterior)
-    function llenarMenuCategorias() {
-      const categoriasUnicas = [...new Set(productos.map(p => p.categoria))];
-      const lista = document.getElementById("categoryList");
-      lista.innerHTML = `<li onclick="seleccionarCategoria('')">▪ Todas las categorías</li>`;
-      categoriasUnicas.forEach(cat => lista.innerHTML += `<li onclick="seleccionarCategoria('${cat}')">▪ ${cat}</li>`);
-    }
-
-    function agregarAlCarrito(id, nombre, precio) {
-      const existe = carrito.find(item => item.id === id);
-      if (existe) existe.cantidad++; else carrito.push({ id, nombre, precio, cantidad: 1 });
-      localStorage.setItem('em_cart', JSON.stringify(carrito));
-      actualizarInterfazCarrito(); toggleCart(); 
-      emitirAudio(`${nombre} agregado al carrito.`);
-    }
-
-    function eliminarDelCarrito(id) {
-      carrito = carrito.filter(item => item.id !== id);
-      localStorage.setItem('em_cart', JSON.stringify(carrito));
-      actualizarInterfazCarrito();
-    }
-
-    function actualizarInterfazCarrito() {
-      const container = document.getElementById("cartItemsContainer");
-      let total = 0; let cantidadTotal = 0;
-
-      if(carrito.length === 0) {
-        container.innerHTML = '<div style="text-align:center; color:var(--text-muted); margin-top:20px;">El carrito está vacío.</div>';
-        document.getElementById("cartTotal").innerText = "0.00"; 
-        document.getElementById("cartBadgeMobile").innerText = "0"; return;
-      }
-
-      container.innerHTML = carrito.map(item => {
-        total += (item.precio * item.cantidad); cantidadTotal += item.cantidad;
-        return `
-          <div class="cart-item">
-            <div><div style="font-size:0.85rem">${item.nombre}</div><div style="color:var(--text-muted); font-size:0.8rem">${item.cantidad} x S/ ${item.precio.toFixed(2)}</div></div>
-            <button style="color:#ff4c4c; background:none; border:none; cursor:pointer" onclick="eliminarDelCarrito('${item.id}')">✕</button>
+          <div class="card-price">
+            S/ ${p.precio.toFixed(2)}
+            <span style="font-size:1.2rem; cursor:pointer;" onclick="hablar('${p.nombre}, cuesta ${p.precio} soles.')">🗣️</span>
           </div>
-        `;
-      }).join('');
-      document.getElementById("cartTotal").innerText = total.toFixed(2);
-      document.getElementById("cartBadgeMobile").innerText = cantidadTotal;
+          <button class="btn-cart" onclick="addCart('${p.id}','${p.nombre}',${p.precio})">✚ Agregar</button>
+          <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola, deseo: ' + p.nombre)}" target="_blank" class="btn-wa">💬 Comprar Directo</a>
+        </div>
+      `).join("");
+    }
+
+    // 4. Lógica de Carrito
+    function addCart(id, nom, pre) {
+      const ex = carrito.find(i => i.id === id);
+      if(ex) ex.cantidad++; else carrito.push({id, nombre:nom, precio:pre, cantidad:1});
+      localStorage.setItem('em_cart_2030', JSON.stringify(carrito));
+      actualizarCarrito();
+      hablar("Agregado al carrito");
+      toggleCart();
+    }
+    
+    function removerItem(id) {
+      carrito = carrito.filter(i => i.id !== id);
+      localStorage.setItem('em_cart_2030', JSON.stringify(carrito));
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      let t = 0, html = "";
+      carrito.forEach(i => {
+        t += (i.precio * i.cantidad);
+        html += `<div class="cart-item">
+          <div><div style="font-size:0.8rem; color:white;">${i.nombre}</div><div style="color:var(--gold-primary);">${i.cantidad} x S/ ${i.precio}</div></div>
+          <button onclick="removerItem('${i.id}')" style="background:red; color:white; border:none; padding:5px; cursor:pointer;">X</button>
+        </div>`;
+      });
+      document.getElementById("cartItemsContainer").innerHTML = carrito.length ? html : '<div style="text-align:center; color:#666;">Vacío</div>';
+      document.getElementById("cartTotal").innerText = t.toFixed(2);
+      document.getElementById("cartCountTop").innerText = carrito.reduce((a,b)=>a+b.cantidad,0);
     }
 
     function enviarPedidoWhatsapp() {
-      if(carrito.length === 0) return alert("Tu carrito está vacío.");
-      let mensaje = "*PEDIDO WEB - E&M TECHNOLOGY* %0A%0A";
-      let total = 0;
-      carrito.forEach(item => { const sub = item.precio * item.cantidad; total += sub; mensaje += `- ${item.cantidad}x ${item.nombre} (S/ ${sub.toFixed(2)})%0A`; });
-      mensaje += `%0A*TOTAL: S/ ${total.toFixed(2)}*%0A%0A Mis datos:%0ANombre: %0ADNI: `;
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${mensaje}`, "_blank");
+      if(!carrito.length) return alert("Carrito vacío");
+      let msg = "*NUEVO PEDIDO - TECHNOLOGY STORE*%0A", tot = 0;
+      carrito.forEach(i => { msg += `- ${i.cantidad}x ${i.nombre} (S/${i.precio*i.cantidad})%0A`; tot += i.precio*i.cantidad; });
+      msg += `%0A*TOTAL: S/ ${tot.toFixed(2)}*%0A%0AMis datos:%0A`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
     }
 
-    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); document.getElementById('cartDrawer').classList.remove('open');}
-    function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); document.getElementById('sideMenu').classList.remove('open');}
+    // 5. Asistencia de Voz (Web Speech API)
+    function toggleAudio() {
+      audioHabilitado = !audioHabilitado;
+      document.getElementById('btn-audio').style.color = audioHabilitado ? "var(--gold-primary)" : "var(--text-muted)";
+      if(audioHabilitado) hablar("Modo de asistencia por voz activado. Bienvenido a Technology Store.");
+      else window.speechSynthesis.cancel();
+    }
+    function hablar(txt) {
+      if(!audioHabilitado) return;
+      window.speechSynthesis.cancel();
+      const ut = new SpeechSynthesisUtterance(txt);
+      ut.lang = 'es-PE'; ut.rate = 1.05;
+      window.speechSynthesis.speak(ut);
+    }
+
+    // 6. Inteligencia Artificial / Chatbot Local
+    function toggleChat() { document.getElementById('chatWindow').classList.toggle('open'); }
+    
+    function enviarMensajeBot() {
+      const inp = document.getElementById('chatInput');
+      const val = inp.value.trim().toLowerCase();
+      if(!val) return;
+      
+      const chat = document.getElementById('chatMessages');
+      chat.innerHTML += `<div class="msg user">${inp.value}</div>`;
+      inp.value = '';
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        let res = "No encontré esa información. Usa la barra superior para buscar componentes específicos.";
+        
+        if (val.includes("hola") || val.includes("buenos")) res = "¡Hola! Bienvenido a Technology Store. ¿Buscas laptops o accesorios?";
+        else if (val.includes("direccion") || val.includes("ubicacion") || val.includes("donde")) res = "Nuestra sede operativa está en Otuzco, La Libertad, Perú. Hacemos envíos coordinados de forma segura.";
+        else if (val.includes("nombre") || val.includes("tienda") || val.includes("descripcion")) res = "Somos TECHNOLOGY STORE, tu aliado en innovación. Brindamos lo mejor en venta y servicio técnico especializado.";
+        else if (val.includes("garantia")) res = "Ofrecemos garantía directa. Como novedad, te otorgamos 1 AÑO completo de Garantía Extendida Premium en compras de alto valor (superiores a S/ 1000).";
+        else if (val.includes("marca") || val.includes("mejor") || val.includes("recomienda")) res = "De acuerdo a las estadísticas de hardware actuales: En portátiles lideran Lenovo y HP por rendimiento térmico. Para redes inalámbricas, siempre sugerimos TP-Link.";
+        else {
+          // Búsqueda inteligente dentro del chat
+          const finds = productos.filter(p => p.nombre.toLowerCase().includes(val));
+          if(finds.length > 0) res = `¡Sí! Encontré ${finds.length} producto(s) en la base de datos que coinciden con "${val}". Escríbelo en el buscador principal para ver sus precios.`;
+        }
+
+        chat.innerHTML += `<div class="msg bot">${res}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+        hablar(res);
+      }, 700);
+    }
+
+    // 7. Controles UI
+    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
     function closeAllDrawers() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
+    // Arranque
     loadData();
   </script>
 </body>
