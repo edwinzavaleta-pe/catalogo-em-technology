@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Technology Store | Tienda</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    /* Diseño Premium 2030 - Black, Gold & RGB con Efecto Neón Giratorio Continuo */
+    :root {
+      --bg-main: #070707;
+      --bg-header: #000000;
+      --bg-card: #111111;
+      --gold-primary: #d4af37;
+      --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+      --whatsapp-green: #25d366;
+      --text-main: #ffffff;
+      --text-muted: #888888;
+      --border-color: #222222;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    
+    body { background-color: var(--bg-main); color: var(--text-main); padding-top: 145px; padding-bottom: 75px; }
+
+    @keyframes rgbGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .rgb-line {
+      height: 3px; width: 100%;
+      background: linear-gradient(90deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+      background-size: 200% 200%;
+      animation: rgbGlow 4s linear infinite;
+    }
+
+    .rgb-border {
+      position: relative; border-radius: 50%; padding: 3px;
+      background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+      background-size: 300% 300%;
+      animation: rgbGlow 3s linear infinite;
+    }
+
+    header {
+      background-color: var(--bg-header); 
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    }
+    
+    .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; height: 60px; }
+    .menu-btn { background: none; border: none; color: var(--gold-primary); cursor: pointer; display: flex; align-items: center;}
+
+    .logo-container { flex: 1; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .logo-container img { height: 40px; width: 40px; border-radius: 50%; border: 1px solid var(--gold-primary); object-fit: cover; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+    .logo-container h1 { 
+      font-size: 1.3rem; font-weight: 900; margin: 0; 
+      background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .user-actions { display: flex; gap: 15px; color: var(--gold-primary); align-items: center; }
+    .icon-btn { background: none; border: none; color: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;}
+    .icon-btn:hover { transform: scale(1.1); }
+
+    .search-bar-container { background-color: var(--bg-header); padding: 10px 15px; }
+    .search-input-wrapper {
+      display: flex; background: var(--bg-card); border: 1px solid var(--gold-primary); border-radius: 6px; overflow: hidden; margin-bottom: 10px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+    }
+    .search-input-wrapper input {
+      flex: 1; padding: 12px 15px; border: none; outline: none; background: transparent; color: var(--text-main); font-size: 0.95rem;
+    }
+    .search-input-wrapper button { background: var(--gold-primary); color: #000; border: none; padding: 0 15px; cursor: pointer; display: flex; align-items: center;}
+    
+    .filter-wrapper { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: var(--gold-primary); font-weight: bold;}
+    .filter-wrapper input[type=range] { flex: 1; accent-color: var(--gold-primary); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+    .section-title { font-size: 1.3rem; font-weight: 800; margin: 10px 0 20px; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; border-left: 4px solid var(--gold-primary); padding-left: 10px;}
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px; }
+    @media (min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; } }
+    
+    .card {
+      background: var(--bg-card); border-radius: 10px; padding: 15px; text-align: center;
+      border: 1px solid var(--border-color); display: flex; flex-direction: column; position: relative;
+      transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .card:hover { border-color: var(--gold-primary); transform: translateY(-5px); box-shadow: 0 8px 20px rgba(212, 175, 55, 0.15); }
+    
+    .card-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 8px; line-height: 1.4; height: 38px; overflow: hidden; }
+    .card-price { font-size: 1.2rem; font-weight: 900; color: var(--gold-primary); margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 8px;}
+    
+    /* EFECTO DE LUZ NEÓN GIRATORIA CONSTANTE (Referencia exacta) */
+    .btn-cart {
+      position: relative;
+      background: #111111;
+      color: var(--gold-primary);
+      border: none;
+      padding: 11px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 8px;
+      overflow: hidden;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      z-index: 1;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease, color 0.3s ease;
+    }
+
+    .btn-cart::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: conic-gradient(transparent, transparent, transparent, #d4af37, #fff6a1, #d4af37);
+      animation: rotarLuz 3s linear infinite;
+      z-index: -2;
+    }
+
+    .btn-cart::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: #111111;
+      border-radius: 28px;
+      z-index: -1;
+      transition: background 0.3s ease;
+    }
+
+    @keyframes rotarLuz {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-cart:hover {
+      transform: scale(1.03);
+      color: #000;
+    }
+
+    .btn-cart:hover::after {
+      background: var(--gold-gradient);
+    }
+
+    .btn-wa { background: var(--whatsapp-green); color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; width: 100%; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 8px; transition: opacity 0.2s;}
+    .btn-wa:hover { opacity: 0.9; }
+
+    .bot-float-container { position: fixed; bottom: 85px; right: 15px; z-index: 1000; cursor: pointer; transition: transform 0.3s; }
+    .bot-float-container:hover { transform: scale(1.1); }
+    .bot-float {
+      width: 55px; height: 55px; background: #000; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: var(--gold-primary);
+    }
+    
+    .chat-window {
+      position: fixed; bottom: 155px; right: 15px; width: 320px; height: 420px;
+      background: var(--bg-card); border: 1px solid var(--gold-primary); border-radius: 12px; z-index: 1000; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+    }
+    .chat-window.open { display: flex; }
+    .chat-header { background: var(--bg-header); padding: 15px; border-bottom: 1px solid var(--gold-primary); color: var(--gold-primary); font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+    .chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .msg { padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; max-width: 85%; }
+    .msg.bot { background: #222; color: var(--text-main); align-self: flex-start; border-top-left-radius: 0; border-left: 2px solid var(--gold-primary);}
+    .msg.user { background: var(--gold-gradient); color: #000; align-self: flex-end; border-top-right-radius: 0; font-weight: bold;}
+    .chat-input-area { display: flex; border-top: 1px solid var(--border-color); background: #000;}
+    .chat-input-area input { flex: 1; padding: 15px; background: transparent; border: none; color: white; outline: none; }
+    .chat-input-area button { background: transparent; color: var(--gold-primary); border: none; padding: 0 15px; cursor: pointer; }
+
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(3px); z-index: 1500; display: none; }
+    .overlay.open { display: block; }
+    .side-menu, .cart-drawer { position: fixed; top: 0; width: 280px; height: 100vh; background: var(--bg-card); z-index: 2000; transition: 0.3s ease; overflow-y: auto; box-shadow: 0 0 20px rgba(0,0,0,0.8);}
+    .side-menu { left: -100%; border-right: 1px solid var(--gold-primary); }
+    .cart-drawer { right: -100%; width: 320px; border-left: 1px solid var(--gold-primary); display: flex; flex-direction: column; }
+    .side-menu.open { left: 0; } .cart-drawer.open { right: 0; }
+    .cart-header { padding: 15px; border-bottom: 1px solid var(--gold-primary); font-weight: bold; color: var(--gold-primary); display: flex; justify-content: space-between; align-items: center;}
+    .cart-items { flex: 1; overflow-y: auto; padding: 15px; }
+    .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px; align-items: center;}
+    .cart-footer { padding: 20px; border-top: 1px solid var(--gold-primary); background: var(--bg-header);}
+    
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-header); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid var(--border-color); z-index: 900; box-shadow: 0 -4px 10px rgba(0,0,0,0.5);}
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); cursor: pointer; position: relative; font-size: 0.75rem; font-weight: 600; gap: 4px; transition: color 0.3s;}
+    .nav-item:hover, .nav-item.active { color: var(--gold-primary); }
+    .nav-icon { display: flex; align-items: center; justify-content: center; }
+    
+    #status-msg { text-align: center; padding: 50px 20px; color: var(--gold-primary); font-weight: bold; font-size: 1.1rem;}
+    
+    svg { width: 22px; height: 22px; stroke-width: 2; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
+
+  <header>
+    <div class="top-bar">
+      <button class="menu-btn icon-btn" onclick="toggleMenu()">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+      <div class="logo-container">
+        <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
+        <h1>TECHNOLOGY STORE</h1>
+      </div>
+      <div class="user-actions">
+        <button id="btn-audio" class="icon-btn" onclick="toggleAudio()" style="color:var(--text-muted);" title="Modo Accesibilidad por Voz">
+          <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+        <div class="icon-btn" onclick="toggleCart()" style="position: relative;">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <span id="cartCountTop" style="position:absolute; top:-8px; right:-8px; background:var(--gold-gradient); color:#000; font-size:0.7rem; font-weight:900; padding:2px 6px; border-radius:12px;">0</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="rgb-line"></div>
+
+    <div class="search-bar-container">
+      <div class="search-input-wrapper">
+        <input type="text" id="searchInput" placeholder="Buscar productos (ej. disco ssd, laptop)..." onkeypress="if(event.key === 'Enter') filtrarProductos()">
+        <button onclick="filtrarProductos()">
+          <svg viewBox="0 0 24 24" style="width:20px; height:20px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </div>
+      <div class="filter-wrapper">
+        <span>Precio Máx: S/ <span id="priceLabel">5000</span></span>
+        <input type="range" id="priceFilter" min="0" max="6000" step="50" value="6000" oninput="filtrarProductos()">
+      </div>
+    </div>
+  </header>
+
+  <div class="side-menu" id="sideMenu">
+    <div style="padding:20px; border-bottom:1px solid var(--gold-primary); color:var(--gold-primary); font-weight:900; text-align:center; font-size:1.2rem; letter-spacing: 1px;">CATEGORÍAS</div>
+    <ul id="categoryList" style="list-style:none;">
+      <li style="padding:15px 20px; border-bottom:1px solid var(--border-color); cursor:pointer; font-weight:600;" onclick="seleccionarCategoria(''); resetNav(document.querySelectorAll('.nav-item')[0]);">▪ VER TODO EL CATÁLOGO</li>
+    </ul>
+  </div>
+
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <span style="font-size:1.2rem; letter-spacing:1px;">TU PEDIDO</span>
+      <button class="icon-btn" onclick="toggleCart()" style="color:var(--text-main);">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="cart-items" id="cartItemsContainer"><div style="text-align:center; margin-top:40px; color:var(--text-muted);">El carrito está vacío</div></div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; margin-bottom:15px; color:var(--gold-primary); font-weight:900; font-size:1.2rem;"><span>Total:</span><span>S/ <span id="cartTotal">0.00</span></span></div>
+      <button class="btn-cart" onclick="enviarPedidoWhatsapp()">Procesar Compra ➔</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="section-title" id="tituloSeccion">Catálogo Virtual</h2>
+    <div id="status-msg">
+      <svg viewBox="0 0 24 24" style="width:40px; height:40px; animation: rgbGlow 2s infinite;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <br><br>Cargando base de datos...
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </div>
+
+  <div class="bot-float-container" onclick="toggleChat()">
+    <div class="rgb-border">
+      <div class="bot-float">
+        <svg viewBox="0 0 24 24" style="width:28px; height:28px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      </div>
+    </div>
+  </div>
+  
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <span>Asistente IA</span>
+      <button class="icon-btn" onclick="toggleChat()" style="color:var(--gold-primary);">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">¡Hola! Soy la IA de E&M Technology Store. Dime qué equipo o componente buscas hoy.</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe aquí..." onkeypress="if(event.key === 'Enter') enviarMensajeBot()">
+      <button class="icon-btn" onclick="enviarMensajeBot()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="seleccionarCategoria(''); resetNav(this);">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span>
+      <span>Inicio</span>
+    </div>
+    <div class="nav-item" onclick="mostrarDestacados(); resetNav(this);">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+      <span>Destacados</span>
+    </div>
+    <div class="nav-item" onclick="toggleCart()">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span>
+      <span>Caja</span>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "51999715081";
+    let productos = [];
+    let carrito = JSON.parse(localStorage.getItem('em_cart_2030')) || [];
+    let categoriaActual = "";
+    let audioHabilitado = false;
+
+    function normalizar(texto) {
+      return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
+    function resetNav(element) {
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch(`catalogo_productos_limpio.csv?t=${new Date().getTime()}`);
+        if(!res.ok) throw new Error("No internet");
+        const txt = await res.text();
+        localStorage.setItem('em_cache_csv', txt); 
+        procesarCSV(txt);
+      } catch (e) {
+        const cache = localStorage.getItem('em_cache_csv');
+        if(cache) {
+          document.getElementById("status-msg").innerHTML = "📡 MODO OFFLINE<br><span style='font-size:0.8rem; color:#888;'>Cargando datos guardados...</span>";
+          setTimeout(() => procesarCSV(cache), 1500);
+        } else {
+          document.getElementById("status-msg").innerHTML = "❌ SIN CONEXIÓN<br><span style='font-size:0.8rem; color:#888;'>Conéctate a internet para descargar el catálogo por primera vez.</span>";
+        }
+      }
+    }
+
+    function procesarCSV(text) {
+      productos = text.trim().split("\n").slice(1).map(linea => {
+        const r = linea.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (r.length < 5) return null; 
+        return { 
+          id: r[0], 
+          categoria: r[1].replace(/["']/g, '').trim(), 
+          nombre: r[2].replace(/["']/g, '').trim(), 
+          precio: parseFloat(r[4] || 0) 
+        };
+      }).filter(p => p !== null && p.nombre && p.precio > 0);
+
+      document.getElementById("status-msg").style.display = "none";
+      
+      if(productos.length > 0) {
+        const maxP = Math.ceil(Math.max(...productos.map(p => p.precio)));
+        const slider = document.getElementById("priceFilter");
+        slider.max = maxP; slider.value = maxP;
+        document.getElementById("priceLabel").innerText = maxP;
+      }
+
+      const cats = [...new Set(productos.map(p => p.categoria))];
+      document.getElementById("categoryList").innerHTML = `<li style="padding:15px 20px; border-bottom:1px solid var(--border-color); cursor:pointer; font-weight:600;" onclick="seleccionarCategoria(''); resetNav(document.querySelectorAll('.nav-item')[0]);">▪ VER TODO EL CATÁLOGO</li>`;
+      cats.forEach(c => document.getElementById("categoryList").innerHTML += `<li style="padding:15px 20px; border-bottom:1px solid var(--border-color); cursor:pointer; font-size:0.9rem;" onclick="seleccionarCategoria('${c}')">▪ ${c}</li>`);
+      
+      filtrarProductos();
+      actualizarCarrito();
+    }
+
+    function obtenerLogoMarca(nombre) {
+      const n = normalizar(nombre);
+      let logo = "";
+      
+      if (n.includes("hp")) logo = "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg";
+      else if (n.includes("lenovo")) logo = "https://upload.wikimedia.org/wikipedia/commons/b/b8/Lenovo_logo_2015.svg";
+      else if (n.includes("acer")) logo = "https://upload.wikimedia.org/wikipedia/commons/0/00/Acer_2011.svg";
+      else if (n.includes("asus")) logo = "https://upload.wikimedia.org/wikipedia/commons/2/2e/ASUS_Logo.svg";
+      else if (n.includes("tp-link") || n.includes("tplink") || n.includes("tp link")) logo = "https://upload.wikimedia.org/wikipedia/commons/0/07/TP-Link_Logo.svg";
+      else if (n.includes("dahua")) logo = "https://upload.wikimedia.org/wikipedia/commons/3/30/Dahua_Technology_logo.svg";
+      else if (n.includes("kingston")) logo = "https://upload.wikimedia.org/wikipedia/commons/2/29/Kingston_Technology_logo.svg";
+      else if (n.includes("epson")) logo = "https://upload.wikimedia.org/wikipedia/commons/1/18/Epson_logo.svg";
+      else if (n.includes("intel")) logo = "https://upload.wikimedia.org/wikipedia/commons/c/c9/Intel_logo_%282020%2C_light_blue%29.svg";
+      else if (n.includes("logitech")) logo = "https://upload.wikimedia.org/wikipedia/commons/1/17/Logitech_logo.svg";
+      else if (n.includes("amd") || n.includes("ryzen")) logo = "https://upload.wikimedia.org/wikipedia/commons/7/7c/AMD_Logo.svg";
+      else {
+        return `<img src="logo.jpg" style="max-width:80%; max-height:80px; object-fit:contain; border-radius: 8px; box-shadow: 0 0 10px rgba(212,175,55,0.2);" alt="E&M Technology Store">`;
+      }
+      
+      return `<img src="${logo}" onerror="this.onerror=null; this.src='logo.jpg'; this.style.maxWidth='80%'; this.style.maxHeight='80px'; this.style.borderRadius='8px'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" style="max-width:70%; max-height:50px; object-fit:contain; filter: drop-shadow(0 0 8px rgba(255,255,255,0.15));" alt="Marca">`;
+    }
+
+    function seleccionarCategoria(c) {
+      categoriaActual = c;
+      document.getElementById("tituloSeccion").innerText = c || "Catálogo Virtual";
+      document.getElementById("searchInput").value = "";
+      closeAllDrawers();
+      filtrarProductos();
+    }
+
+    function filtrarProductos() {
+      const q = normalizar(document.getElementById("searchInput").value.trim());
+      const terms = q.split(/\s+/); 
+      const maxPrecio = parseFloat(document.getElementById("priceFilter").value);
+      document.getElementById("priceLabel").innerText = maxPrecio;
+
+      const filtrados = productos.filter(p => {
+        const nom = normalizar(p.nombre);
+        const matchText = (q === "") ? true : terms.every(t => nom.includes(t));
+        const matchCat = (categoriaActual === "" || p.categoria === categoriaActual);
+        const matchPrice = p.precio <= maxPrecio;
+        return matchText && matchCat && matchPrice;
+      });
+
+      document.getElementById("tituloSeccion").innerText = categoriaActual || "Catálogo Virtual";
+      renderizarGrid(filtrados);
+    }
+
+    function mostrarDestacados() {
+      categoriaActual = "";
+      document.getElementById("tituloSeccion").innerText = "Productos Destacados";
+      document.getElementById("searchInput").value = "";
+      const destacados = [...productos].sort(() => 0.5 - Math.random()).slice(0, 12);
+      renderizarGrid(destacados);
+      closeAllDrawers();
+    }
+
+    function renderizarGrid(lista) {
+      const grid = document.getElementById("productGrid");
+      if(lista.length === 0) { grid.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#888; padding: 40px;'>No se encontraron resultados.</p>"; return; }
+
+      grid.innerHTML = lista.map(p => {
+        const smartImage = obtenerLogoMarca(p.nombre);
+        return `
+        <div class="card">
+          <div style="width: 100%; height: 130px; background: radial-gradient(circle, #1a1a1a, #000); margin-bottom: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #222; box-shadow: inset 0 0 15px rgba(0,0,0,0.8);">
+            ${smartImage}
+          </div>
+          <div class="card-title">${p.nombre}</div>
+          <div class="card-price">
+            S/ ${p.precio.toFixed(2)}
+            <button class="icon-btn" onclick="hablar('${p.nombre}, cuesta ${p.precio} soles.')" style="color:var(--text-muted);"><svg viewBox="0 0 24 24" style="width:20px; height:20px;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
+          </div>
+          <button class="btn-cart" onclick="addCart('${p.id}','${p.nombre}',${p.precio})">✚ Agregar al Carrito</button>
+          <a href="https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent('Hola, deseo comprar el producto: ' + p.nombre + ' - Precio: S/ ' + p.precio.toFixed(2))}" target="_blank" class="btn-wa">
+            <svg viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> Comprar Directo
+          </a>
+        </div>
+      `}).join("");
+    }
+
+    function addCart(id, nom, pre) {
+      const ex = carrito.find(i => i.id === id);
+      if(ex) ex.cantidad++; else carrito.push({id, nombre:nom, precio:pre, cantidad:1});
+      localStorage.setItem('em_cart_2030', JSON.stringify(carrito));
+      actualizarCarrito();
+      hablar("Agregado al carrito");
+      toggleCart();
+    }
+    
+    function removerItem(id) {
+      carrito = carrito.filter(i => i.id !== id);
+      localStorage.setItem('em_cart_2030', JSON.stringify(carrito));
+      actualizarCarrito();
+    }
+
+    function actualizarCarrito() {
+      let t = 0, html = "";
+      carrito.forEach(i => {
+        t += (i.precio * i.cantidad);
+        html += `<div class="cart-item">
+          <div style="flex:1; padding-right:10px;"><div style="font-size:0.85rem; color:white; line-height:1.2; margin-bottom:5px;">${i.nombre}</div><div style="color:var(--gold-primary); font-weight:bold;">${i.cantidad} x S/ ${i.precio.toFixed(2)}</div></div>
+          <button class="icon-btn" onclick="removerItem('${i.id}')" style="color:#ff4444; background:rgba(255,0,0,0.1); padding:8px; border-radius:6px;"><svg viewBox="0 0 24 24" style="width:18px; height:18px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+        </div>`;
+      });
+      document.getElementById("cartItemsContainer").innerHTML = carrito.length ? html : '<div style="text-align:center; margin-top:40px; color:var(--text-muted);">El carrito está vacío</div>';
+      document.getElementById("cartTotal").innerText = t.toFixed(2);
+      document.getElementById("cartCountTop").innerText = carrito.reduce((a,b)=>a+b.cantidad,0);
+    }
+
+    function enviarPedidoWhatsapp() {
+      if(!carrito.length) return alert("Tu carrito está vacío");
+      
+      let lineas = ["*NUEVO PEDIDO WEB - E&M TECHNOLOGY STORE*", ""];
+      let totalGeneral = 0;
+      
+      carrito.forEach((item, index) => {
+        let subtotal = item.precio * item.cantidad;
+        totalGeneral += subtotal;
+        lineas.push(`*${index + 1}.* ${item.nombre}`);
+        lineas.push(`   Cant: ${item.cantidad} | P.U: S/ ${item.precio.toFixed(2)} | Sub: S/ ${subtotal.toFixed(2)}`);
+        lineas.push(""); 
+      });
+      
+      lineas.push(`*TOTAL A PAGAR (Incluye Envío): S/ ${totalGeneral.toFixed(2)}*`);
+      lineas.push("");
+      lineas.push("_Enviado desde la Tienda Virtual._");
+      
+      const textoMensaje = lineas.join("\n");
+      const urlWhatsapp = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(textoMensaje)}`;
+      
+      window.open(urlWhatsapp, "_blank");
+    }
+
+    function toggleAudio() {
+      audioHabilitado = !audioHabilitado;
+      document.getElementById('btn-audio').style.color = audioHabilitado ? "var(--gold-primary)" : "var(--text-muted)";
+      if(audioHabilitado) hablar("Modo de voz activado. Bienvenido a E&M Technology Store.");
+      else window.speechSynthesis.cancel();
+    }
+    function hablar(txt) {
+      if(!audioHabilitado) return;
+      window.speechSynthesis.cancel();
+      const ut = new SpeechSynthesisUtterance(txt);
+      ut.lang = 'es-PE'; ut.rate = 1.05;
+      window.speechSynthesis.speak(ut);
+    }
+
+    function toggleChat() { document.getElementById('chatWindow').classList.toggle('open'); }
+    
+    async function enviarMensajeBot() {
+      const inp = document.getElementById('chatInput');
+      const textoOriginal = inp.value.trim();
+      const val = normalizar(textoOriginal);
+      if(!val) return;
+      
+      const chat = document.getElementById('chatMessages');
+      chat.innerHTML += `<div class="msg user">${textoOriginal}</div>`;
+      inp.value = '';
+      chat.scrollTop = chat.scrollHeight;
+
+      const idTyping = "typing-" + Date.now();
+      chat.innerHTML += `<div class="msg bot" id="${idTyping}"><em>Pensando...</em></div>`;
+      chat.scrollTop = chat.scrollHeight;
+
+      let respuestaFinal = "";
+
+      try {
+        const URL_DEL_WORKER = "https://bot-tecnology-store.edwinyordinzavaleta.workers.dev/"; 
+        const maxProductos = productos.slice(0, 30); 
+        let inventario = maxProductos.map(p => `${p.categoria} | ${p.nombre} | S/${p.precio.toFixed(2)}`).join("\n");
+
+        const controlador = new AbortController();
+        const timeoutId = setTimeout(() => controlador.abort(), 8000); 
+
+        const respuesta = await fetch(URL_DEL_WORKER, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mensaje_cliente: textoOriginal, catalogo_actual: inventario }),
+          signal: controlador.signal
+        });
+        
+        clearTimeout(timeoutId);
+        const data = await respuesta.json();
+        if(data && data.reply) {
+          respuestaFinal = data.reply;
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        respuestaFinal = procesarChatOffline(val);
+      }
+
+      document.getElementById(idTyping).remove(); 
+      chat.innerHTML += `<div class="msg bot">${respuestaFinal}</div>`;
+      chat.scrollTop = chat.scrollHeight;
+      hablar(respuestaFinal.replace(/<[^>]*>?/gm, '')); 
+    }
+
+    function procesarChatOffline(val) {
+      if (val.includes("dueño") || val.includes("propietario") || val.includes("ingeniero") || val.includes("edwin")) {
+        return "El dueño y fundador es el Ing. <b>Edwin Yordin Zavaleta Floreano</b>.";
+      }
+      if (val.includes("direccion") || val.includes("ubicacion") || val.includes("donde") || val.includes("ubicados")) {
+        return "Nuestra sede principal está en <b>Otuzco, La Libertad, Perú</b>.";
+      }
+      if (val.includes("garantia")) {
+        return "Ofrecemos garantía directa de marca y <b>1 año de garantía extendida</b>.";
+      }
+      if (val.includes("hola") || val.includes("buenos") || val.includes("buenas")) {
+        return "¡Hola! (Modo de respaldo activo). Dime qué componente buscas hoy.";
+      }
+
+      const terms = val.split(/\s+/);
+      const finds = productos.filter(p => terms.every(t => normalizar(p.nombre).includes(t)));
+      
+      if (finds.length > 0) {
+        return `Encontré el <b>${finds[0].nombre}</b> a <b>S/ ${finds[0].precio.toFixed(2)}</b>.`;
+      }
+      return "Para una búsqueda más avanzada, conéctate a internet o usa la barra superior de búsqueda.";
+    }
+
+    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
+    function closeAllDrawers() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker registrado correctamente.', reg.scope))
+          .catch(err => console.log('Falló el registro del Service Worker:', err));
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
