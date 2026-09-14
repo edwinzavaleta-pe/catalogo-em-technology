@@ -1,4 +1,4 @@
-const CACHE_NAME = 'em-tech-v7';
+const CACHE_NAME = 'em-tech-v8';
 const ASSETS = [
   './',
   './index.html',
